@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- 背景 -->
+  <rect width="1024" height="1024" rx="220" fill="#1a1a2e"/>
+
+  <!-- 影（体） -->
+  <ellipse cx="512" cy="820" rx="200" ry="30" fill="#00000033"/>
+
+  <!-- 羽（左） -->
+  <ellipse cx="270" cy="610" rx="95" ry="60" fill="#F5C518" transform="rotate(-30 270 610)"/>
+  <!-- 羽（右） -->
+  <ellipse cx="754" cy="610" rx="95" ry="60" fill="#F5C518" transform="rotate(30 754 610)"/>
+
+  <!-- 体 -->
+  <ellipse cx="512" cy="650" rx="210" ry="190" fill="#FFD700"/>
+
+  <!-- 頭 -->
+  <circle cx="512" cy="420" r="185" fill="#FFD700"/>
+
+  <!-- 頭のぴよ毛 -->
+  <ellipse cx="512" cy="220" rx="22" ry="55" fill="#FFD700" transform="rotate(0 512 220)"/>
+  <ellipse cx="470" cy="232" rx="18" ry="48" fill="#FFD700" transform="rotate(-20 470 232)"/>
+  <ellipse cx="554" cy="232" rx="18" ry="48" fill="#FFD700" transform="rotate(20 554 232)"/>
+
+  <!-- 目（左） -->
+  <circle cx="450" cy="400" r="38" fill="white"/>
+  <circle cx="462" cy="408" r="22" fill="#1a1a2e"/>
+  <circle cx="468" cy="400" r="8" fill="white"/>
+
+  <!-- 目（右） -->
+  <circle cx="574" cy="400" r="38" fill="white"/>
+  <circle cx="586" cy="408" r="22" fill="#1a1a2e"/>
+  <circle cx="592" cy="400" r="8" fill="white"/>
+
+  <!-- くちばし -->
+  <polygon points="512,445 478,490 546,490" fill="#FF8C00"/>
+  <line x1="478" y1="490" x2="546" y2="490" stroke="#E07000" stroke-width="4"/>
+
+  <!-- ほっぺ（左） -->
+  <ellipse cx="400" cy="450" rx="32" ry="20" fill="#FFB6C1" opacity="0.7"/>
+  <!-- ほっぺ（右） -->
+  <ellipse cx="624" cy="450" rx="32" ry="20" fill="#FFB6C1" opacity="0.7"/>
+
+  <!-- 足（左） -->
+  <rect x="430" y="820" width="28" height="65" rx="10" fill="#FF8C00"/>
+  <rect x="395" y="878" width="28" height="18" rx="6" fill="#FF8C00"/>
+  <rect x="425" y="878" width="28" height="18" rx="6" fill="#FF8C00"/>
+  <rect x="455" y="878" width="28" height="18" rx="6" fill="#FF8C00"/>
+
+  <!-- 足（右） -->
+  <rect x="566" y="820" width="28" height="65" rx="10" fill="#FF8C00"/>
+  <rect x="531" y="878" width="28" height="18" rx="6" fill="#FF8C00"/>
+  <rect x="561" y="878" width="28" height="18" rx="6" fill="#FF8C00"/>
+  <rect x="591" y="878" width="28" height="18" rx="6" fill="#FF8C00"/>
+</svg>
