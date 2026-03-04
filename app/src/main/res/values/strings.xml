@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AutoShorts</string>
+    <string name="accessibility_service_label">AutoShorts 自動スワイプ</string>
+    <string name="accessibility_service_description">YouTube Shortsを自動的に次の動画へ進めます。スワイプジェスチャーの実行にのみ使用されます。</string>
+</resources>

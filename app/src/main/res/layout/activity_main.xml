@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/black">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AutoShorts"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="YouTube Shortsを自動で次へ進めます"
+            android:textSize="14sp"
+            android:textColor="#AAAAAA"
+            android:layout_marginBottom="32dp" />
+
+        <!-- STEP 1: オーバーレイ許可 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="STEP 1: オーバーレイ表示の許可"
+            android:textColor="@color/teal_200"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/tvOverlayStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="❌ 未許可"
+            android:textColor="#FF5555"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btnOverlayPermission"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="オーバーレイ許可を開く"
+            android:layout_marginBottom="24dp" />
+
+        <!-- STEP 2: アクセシビリティ設定 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="STEP 2: アクセシビリティの有効化"
+            android:textColor="@color/teal_200"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/tvAccessibilityStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="❌ 無効"
+            android:textColor="#FF5555"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="設定 → アクセシビリティ → AutoShorts → ON"
+            android:textColor="#AAAAAA"
+            android:textSize="12sp"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btnAccessibilitySettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="アクセシビリティ設定を開く"
+            android:layout_marginBottom="32dp" />
+
+        <!-- ════════════════════════════════════════ -->
+        <!-- 自動スワイプモード -->
+        <!-- ════════════════════════════════════════ -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="自動スワイプモード"
+            android:textColor="@color/teal_200"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp" />
+
+        <RadioGroup
+            android:id="@+id/rgAutoMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/rbTimerMode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="タイマー（設定秒数で自動スワイプ）"
+                android:textColor="@color/white"
+                android:buttonTint="@color/teal_200"
+                android:checked="true" />
+
+            <RadioButton
+                android:id="@+id/rbVideoCompleteMode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="動画終了を検知して自動スワイプ"
+                android:textColor="@color/white"
+                android:buttonTint="@color/teal_200" />
+
+        </RadioGroup>
+
+        <!-- タイマーモード設定（タイマーモード時のみ表示） -->
+        <LinearLayout
+            android:id="@+id/layoutTimerSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="タイマー設定"
+                android:textColor="#AAAAAA"
+                android:textSize="13sp"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:id="@+id/tvTimerValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="60 秒ごとに次へ"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:layout_marginBottom="8dp" />
+
+            <SeekBar
+                android:id="@+id/seekBarTimer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="297"
+                android:progress="57"
+                android:layout_marginBottom="4dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="3秒"
+                    android:textColor="#AAAAAA"
+                    android:textSize="12sp" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="300秒"
+                    android:textColor="#AAAAAA"
+                    android:textSize="12sp"
+                    android:gravity="end" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- 動画終了検知モード設定（VIDEO_COMPLETEモード時のみ表示） -->
+        <LinearLayout
+            android:id="@+id/layoutVideoCompleteSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginBottom="16dp">
+
+            <!-- API 30未満の警告 -->
+            <TextView
+                android:id="@+id/tvApiWarning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="⚠️ この機能はAndroid 11 (API 30)以上が必要です"
+                android:textColor="#FFAA00"
+                android:textSize="13sp"
+                android:visibility="gone"
+                android:layout_marginBottom="8dp" />
+
+            <!-- 検知方式の選択 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="検知方式"
+                android:textColor="#AAAAAA"
+                android:textSize="13sp"
+                android:layout_marginBottom="4dp" />
+
+            <RadioGroup
+                android:id="@+id/rgDetectMethod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp">
+
+                <RadioButton
+                    android:id="@+id/rbDetectThreshold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="95%到達でスワイプ（バー残り5%で次へ）"
+                    android:textColor="@color/white"
+                    android:buttonTint="@color/teal_200"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:id="@+id/rbDetectLoop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ループ検知でスワイプ（最後まで再生→ループ開始を検知）"
+                    android:textColor="@color/white"
+                    android:buttonTint="@color/teal_200" />
+
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="バーなし動画のフォールバック時間"
+                android:textColor="#AAAAAA"
+                android:textSize="13sp"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="バーが出現しない短い動画は設定時間後にスワイプします"
+                android:textColor="#888888"
+                android:textSize="11sp"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/tvNoBarFallbackValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="10 秒後にスワイプ"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:layout_marginBottom="8dp" />
+
+            <SeekBar
+                android:id="@+id/seekBarNoBarFallback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="57"
+                android:progress="7"
+                android:layout_marginBottom="4dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="3秒"
+                    android:textColor="#AAAAAA"
+                    android:textSize="12sp" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="60秒"
+                    android:textColor="#AAAAAA"
+                    android:textSize="12sp"
+                    android:gravity="end" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- ════════════════════════════════════════ -->
+        <!-- スワイプ設定 -->
+        <!-- ════════════════════════════════════════ -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="スワイプ設定"
+            android:textColor="@color/teal_200"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- スワイプ方向 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="スワイプ方向"
+            android:textColor="#AAAAAA"
+            android:textSize="13sp"
+            android:layout_marginBottom="4dp" />
+
+        <RadioGroup
+            android:id="@+id/rgSwipeDirection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/rbSwipeUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="↑ 上（YouTube Shorts 次の動画）"
+                android:textColor="@color/white"
+                android:buttonTint="@color/teal_200"
+                android:checked="true" />
+
+            <RadioButton
+                android:id="@+id/rbSwipeDown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="↓ 下"
+                android:textColor="@color/white"
+                android:buttonTint="@color/teal_200" />
+
+            <RadioButton
+                android:id="@+id/rbSwipeLeft"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="← 左"
+                android:textColor="@color/white"
+                android:buttonTint="@color/teal_200" />
+
+            <RadioButton
+                android:id="@+id/rbSwipeRight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="→ 右"
+                android:textColor="@color/white"
+                android:buttonTint="@color/teal_200" />
+
+        </RadioGroup>
+
+        <!-- スワイプ速度 -->
+        <TextView
+            android:id="@+id/tvSwipeSpeedValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="スワイプ速度: 300ms"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_marginBottom="8dp" />
+
+        <SeekBar
+            android:id="@+id/seekBarSwipeSpeed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="700"
+            android:progress="200"
+            android:layout_marginBottom="4dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="100ms（速い）"
+                android:textColor="#AAAAAA"
+                android:textSize="12sp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="800ms（ゆっくり）"
+                android:textColor="#AAAAAA"
+                android:textSize="12sp"
+                android:gravity="end" />
+        </LinearLayout>
+
+        <!-- スワイプ距離 -->
+        <TextView
+            android:id="@+id/tvSwipeDistanceValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="スワイプ距離: 40%"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_marginBottom="8dp" />
+
+        <SeekBar
+            android:id="@+id/seekBarSwipeDistance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="12"
+            android:progress="4"
+            android:layout_marginBottom="4dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="32dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="20%（短い）"
+                android:textColor="#AAAAAA"
+                android:textSize="12sp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="80%（長い）"
+                android:textColor="#AAAAAA"
+                android:textSize="12sp"
+                android:gravity="end" />
+        </LinearLayout>
+
+        <!-- ════════════════════════════════════════ -->
+        <!-- サービス開始/停止 -->
+        <!-- ════════════════════════════════════════ -->
+        <Button
+            android:id="@+id/btnStartService"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="オーバーレイボタンを表示"
+            android:textSize="16sp"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/btnStopService"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="サービスを停止"
+            android:backgroundTint="#555555"
+            android:layout_marginBottom="32dp" />
+
+    </LinearLayout>
+</ScrollView>

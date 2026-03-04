@@ -1,0 +1,15 @@
+# Build outputs
+build/
+app/build/
+
+# Local configuration
+local.properties
+*.iml
+.gradle/
+
+# Android Studio
+.idea/
+*.DS_Store
+
+# Claude
+.claude/
