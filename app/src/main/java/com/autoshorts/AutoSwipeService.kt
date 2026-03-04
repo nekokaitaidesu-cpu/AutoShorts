@@ -177,24 +177,25 @@ class AutoSwipeService : AccessibilityService() {
 
                 val ratio = result.completionRatio
 
-                // ── 検知方式: 90%閾値 ──
-                if (method == SettingsManager.DETECT_THRESHOLD && ratio >= BAR_COMPLETE_THRESHOLD) {
-                    Log.d(TAG, "Threshold reached (${ratio}), swiping")
-                    performSwipe()
-                    resetWatchState()
-                    scheduleNextScreenshot(POST_SWIPE_DELAY_MS)
-                    return
+                // ── 検知方式: 閾値 ──
+                if (method == SettingsManager.DETECT_THRESHOLD) {
+                    val threshold = settingsManager.barCompleteThresholdPercent / 100f
+                    if (ratio >= threshold) {
+                        Log.d(TAG, "Threshold reached (${ratio}), swiping")
+                        performSwipe()
+                        resetWatchState()
+                        scheduleNextScreenshot(POST_SWIPE_DELAY_MS)
+                        return
+                    }
                 }
 
                 // ── 検知方式: ループ検知 ──
-                if (method == SettingsManager.DETECT_LOOP) {
-                    // 80%以上に到達したことを記憶
-                    if (ratio >= LOOP_DETECT_NEAR_END) {
-                        reachedNearEnd = true
-                    }
-                    // 「近端に達した後」かつ「バーが先頭（10%以下）に戻った」→ ループ検知
-                    if (reachedNearEnd && ratio <= LOOP_DETECT_RESET && lastCompletionRatio > LOOP_DETECT_NEAR_END) {
-                        Log.d(TAG, "Loop detected (${lastCompletionRatio} → ${ratio}), swiping")
+                // 「バーが30%以上一気に後退」= ループしたと判断してスワイプ
+                // ※短い動画でも400msのスクリーンショット間隔で確実に検知できる
+                if (method == SettingsManager.DETECT_LOOP && lastCompletionRatio > 0f) {
+                    val drop = lastCompletionRatio - ratio
+                    if (drop >= LOOP_JUMP_THRESHOLD) {
+                        Log.d(TAG, "Loop detected: drop ${lastCompletionRatio} → ${ratio} (${drop}), swiping")
                         performSwipe()
                         resetWatchState()
                         scheduleNextScreenshot(POST_SWIPE_DELAY_MS)
@@ -230,9 +231,12 @@ class AutoSwipeService : AccessibilityService() {
         val width = bitmap.width
         val height = bitmap.height
 
-        // 画面下部 75〜98% の範囲でスキャン（縦横両対応）
-        val scanStartY = (height * 0.75).toInt()
-        val scanEndY   = (height * 0.98).toInt()
+        // 縦横で異なるスキャン範囲を使用
+        // 縦画面: 80〜93%（YouTubeナビバーが93%以降にあるため除外）
+        // 横画面: 80〜96%（ナビバーが小さくなるためより広めにスキャン）
+        val isLandscape = width > height
+        val scanStartY = (height * 0.80).toInt()
+        val scanEndY   = if (isLandscape) (height * 0.96).toInt() else (height * 0.93).toInt()
 
         var bestRowY = -1
         var maxRedCount = 0
@@ -255,7 +259,7 @@ class AutoSwipeService : AccessibilityService() {
             return BarAnalysisResult(false, 0f)
         }
 
-        // bestRowY ±3行の範囲で左端・右端の赤ピクセルを探す
+        // bestRowY ±3行の範囲で右端の赤ピクセルを探す
         var rightmostRed = 0
         var leftmostRed = width
         val rowRange = (bestRowY - 3..bestRowY + 3).filter { it in 0 until height }
@@ -274,14 +278,8 @@ class AutoSwipeService : AccessibilityService() {
             }
         }
 
-        // 進捗バーは必ず左端（0付近）から始まる
-        // 左端が10%以上離れていればアイコン等の誤検知とみなす
-        if (leftmostRed > width * 0.10f) {
-            return BarAnalysisResult(false, 0f)
-        }
-
-        // バーは最低でも幅の15%以上の広がりが必要（小さいアイコン等を除外）
-        if (rightmostRed - leftmostRed < width * 0.15f) {
+        // バーは幅の20%以上の広がりが必要（小さいアイコン等を除外）
+        if (rightmostRed - leftmostRed < width * 0.20f) {
             return BarAnalysisResult(false, 0f)
         }
 
@@ -371,11 +369,9 @@ class AutoSwipeService : AccessibilityService() {
         const val ACTION_BAR_PROGRESS  = "com.autoshorts.ACTION_BAR_PROGRESS"
         const val ACTION_NO_BAR_TICK   = "com.autoshorts.ACTION_NO_BAR_TICK"
 
-        private const val SCREENSHOT_INTERVAL_MS  = 400L
-        private const val POST_SWIPE_DELAY_MS     = 1500L
-        private const val BAR_COMPLETE_THRESHOLD  = 0.95f  // 95%閾値モード用
-        private const val LOOP_DETECT_NEAR_END    = 0.80f  // ループ検知: 80%以上で「終盤」とみなす
-        private const val LOOP_DETECT_RESET       = 0.10f  // ループ検知: 10%以下で「リセット」とみなす
-        private const val NO_BAR_CONFIRM_COUNT    = 4      // 約1.6秒でバーなし確定
+        private const val SCREENSHOT_INTERVAL_MS = 400L
+        private const val POST_SWIPE_DELAY_MS   = 1500L
+        private const val LOOP_JUMP_THRESHOLD   = 0.30f  // 30%以上後退したらループとみなす
+        private const val NO_BAR_CONFIRM_COUNT  = 4      // 約1.6秒でバーなし確定
     }
 }

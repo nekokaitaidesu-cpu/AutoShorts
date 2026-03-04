@@ -32,6 +32,11 @@ class SettingsManager(context: Context) {
         get() = prefs.getString("detect_method", DETECT_THRESHOLD) ?: DETECT_THRESHOLD
         set(value) = prefs.edit().putString("detect_method", value).apply()
 
+    // 閾値モードの到達％（50〜100）
+    var barCompleteThresholdPercent: Int
+        get() = prefs.getInt("bar_complete_threshold", DEFAULT_BAR_THRESHOLD)
+        set(value) = prefs.edit().putInt("bar_complete_threshold", value.coerceIn(MIN_BAR_THRESHOLD, MAX_BAR_THRESHOLD)).apply()
+
     var noBarFallbackSeconds: Int
         get() = prefs.getInt("no_bar_fallback_seconds", DEFAULT_NO_BAR_FALLBACK)
         set(value) = prefs.edit().putInt("no_bar_fallback_seconds", value.coerceIn(MIN_NO_BAR_FALLBACK, MAX_NO_BAR_FALLBACK)).apply()
@@ -60,6 +65,10 @@ class SettingsManager(context: Context) {
         // VIDEO_COMPLETE モード内の検知方式
         const val DETECT_THRESHOLD = "THRESHOLD"   // 90%到達でスワイプ
         const val DETECT_LOOP     = "LOOP"         // ループ(バーリセット)検知でスワイプ
+
+        const val DEFAULT_BAR_THRESHOLD = 95
+        const val MIN_BAR_THRESHOLD     = 50
+        const val MAX_BAR_THRESHOLD     = 100
 
         const val DEFAULT_NO_BAR_FALLBACK = 10
         const val MIN_NO_BAR_FALLBACK = 3

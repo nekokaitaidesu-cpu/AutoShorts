@@ -38,6 +38,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var rgDetectMethod: RadioGroup
     private lateinit var rbDetectThreshold: RadioButton
     private lateinit var rbDetectLoop: RadioButton
+    private lateinit var layoutThresholdSlider: LinearLayout
+    private lateinit var tvBarThresholdValue: TextView
+    private lateinit var seekBarBarThreshold: SeekBar
 
     // バーなしフォールバック
     private lateinit var tvNoBarFallbackValue: TextView
@@ -63,6 +66,7 @@ class MainActivity : AppCompatActivity() {
         bindViews()
         setupAutoModeSection()
         setupDetectMethodSection()
+        setupBarThresholdSeekBar()
         setupTimerSeekBar()
         setupNoBarFallbackSeekBar()
         setupSwipeSettings()
@@ -87,9 +91,12 @@ class MainActivity : AppCompatActivity() {
         layoutVideoCompleteSettings  = findViewById(R.id.layoutVideoCompleteSettings)
         tvApiWarning                 = findViewById(R.id.tvApiWarning)
 
-        rgDetectMethod      = findViewById(R.id.rgDetectMethod)
-        rbDetectThreshold   = findViewById(R.id.rbDetectThreshold)
-        rbDetectLoop        = findViewById(R.id.rbDetectLoop)
+        rgDetectMethod         = findViewById(R.id.rgDetectMethod)
+        rbDetectThreshold      = findViewById(R.id.rbDetectThreshold)
+        rbDetectLoop           = findViewById(R.id.rbDetectLoop)
+        layoutThresholdSlider  = findViewById(R.id.layoutThresholdSlider)
+        tvBarThresholdValue    = findViewById(R.id.tvBarThresholdValue)
+        seekBarBarThreshold    = findViewById(R.id.seekBarBarThreshold)
 
         tvNoBarFallbackValue  = findViewById(R.id.tvNoBarFallbackValue)
         seekBarNoBarFallback  = findViewById(R.id.seekBarNoBarFallback)
@@ -149,16 +156,34 @@ class MainActivity : AppCompatActivity() {
     // ───────────── 検知方式 ─────────────
 
     private fun setupDetectMethodSection() {
-        when (settingsManager.detectMethod) {
-            SettingsManager.DETECT_LOOP -> rbDetectLoop.isChecked = true
-            else                        -> rbDetectThreshold.isChecked = true
-        }
+        val isLoop = settingsManager.detectMethod == SettingsManager.DETECT_LOOP
+        if (isLoop) rbDetectLoop.isChecked = true else rbDetectThreshold.isChecked = true
+        layoutThresholdSlider.visibility = if (isLoop) View.GONE else View.VISIBLE
+
         rgDetectMethod.setOnCheckedChangeListener { _, checkedId ->
-            settingsManager.detectMethod = when (checkedId) {
-                R.id.rbDetectLoop -> SettingsManager.DETECT_LOOP
-                else              -> SettingsManager.DETECT_THRESHOLD
-            }
+            val loop = checkedId == R.id.rbDetectLoop
+            settingsManager.detectMethod = if (loop) SettingsManager.DETECT_LOOP else SettingsManager.DETECT_THRESHOLD
+            layoutThresholdSlider.visibility = if (loop) View.GONE else View.VISIBLE
         }
+    }
+
+    // ───────────── 閾値スライダー ─────────────
+
+    private fun setupBarThresholdSeekBar() {
+        val current = settingsManager.barCompleteThresholdPercent
+        // seekBar: 0〜50 → 50%〜100%
+        seekBarBarThreshold.progress = current - SettingsManager.MIN_BAR_THRESHOLD
+        tvBarThresholdValue.text = "${current}% に達したらスワイプ"
+
+        seekBarBarThreshold.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                val percent = progress + SettingsManager.MIN_BAR_THRESHOLD
+                settingsManager.barCompleteThresholdPercent = percent
+                tvBarThresholdValue.text = "${percent}% に達したらスワイプ"
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
     }
 
     // ───────────── タイマー設定 ─────────────
